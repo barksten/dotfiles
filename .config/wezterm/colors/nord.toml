@@ -1,0 +1,29 @@
+# My Nord
+[colors]
+foreground = "#ECEFF4"
+background = "#2E3440"
+cursor_bg = "#D8DEE9"
+cursor_fg = "#434C5E"
+selection_bg = "#434C5E"
+selection_fg = "#ECEFF4"
+
+ansi = [
+  "#2E3440",
+  "#BF616A",
+  "#A3BE8C",
+  "#EBCB8B",
+  "#5E81AC",
+  "#B48EAD",
+  "#88C0D0",
+  "#D8DEE9",
+]
+brights = [
+  "#4C566A",
+  "#D08770",
+  "#A3BE8C",
+  "#EBCB8B",
+  "#81A1C1",
+  "#B48EAD",
+  "#8FBCBB",
+  "#ECEFF4",
+]
