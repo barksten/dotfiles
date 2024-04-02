@@ -22,8 +22,6 @@ source "/opt/homebrew/opt/spaceship/spaceship.zsh"
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=4"
 
-cfg() { git --git-dir="${XDG_CONFIG_HOME}/cfg/.git/" --work-tree="$HOME" "$@" ; }
-
 export PATH="/opt/homebrew/sbin:$PATH"
 export MODULAR_HOME="$XDG_CONFIG_HOME/modular"
 export PATH="$XDG_CONFIG_HOME/modular/pkg/packages.modular.com_mojo/bin:$PATH"
