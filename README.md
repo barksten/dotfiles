@@ -27,10 +27,13 @@ $ git clone git@github.com:barksten/dotfiles.git
 $ cd dotfiles
 ```
 then use GNU stow to create symlinks
-
 ```
 $ stow .
 ```
+# Brew bunde
 
+Install homebrew packages
+```
+$ brew bundle```
 
 
