@@ -30,6 +30,6 @@ export CLICOLOR=1
 alias ls="ls -G"
 alias ll="ls -lG"
 alias imgcat="wezterm imgcat"
-alias vim="nvim"
+# alias vim="nvim"
 export PATH=$PATH:$(go env GOPATH)/bin
 
