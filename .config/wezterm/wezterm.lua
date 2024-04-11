@@ -53,7 +53,7 @@ config.window_decorations = "TITLE|RESIZE"
 config.integrated_title_button_style = "MacOsNative"
 
 config.font = wezterm.font("Liga SFMono Nerd Font")
-config.font_size = 14
+config.font_size = 16
 config.use_fancy_tab_bar = false
 config.hide_tab_bar_if_only_one_tab = false
 config.tab_bar_at_bottom = true
