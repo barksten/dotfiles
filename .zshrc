@@ -23,6 +23,7 @@ source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=4"
 
 export PATH="/opt/homebrew/sbin:$PATH"
+export PATH="$(brew --prefix python)/libexec/bin:$PATH"
 export MODULAR_HOME="$XDG_CONFIG_HOME/modular"
 export PATH="$XDG_CONFIG_HOME/modular/pkg/packages.modular.com_mojo/bin:$PATH"
 
