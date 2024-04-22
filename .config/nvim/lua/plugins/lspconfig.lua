@@ -8,6 +8,7 @@ return {
           filetypes = { "swift", "c", "cpp", "objective-c", "objective-cpp" },
           root_dir = lspconfig.util.root_pattern("Package.swift", ".git"),
         },
+        gleam = {},
       },
     },
   },
