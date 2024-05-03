@@ -2,6 +2,9 @@ local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 local act = wezterm.action
 
+-- Spawn a fish shell in login mode
+config.default_prog = { "/opt/homebrew/bin/fish", "-l" }
+
 -- wezterm.gui is not available to the mux server, so take care to
 -- do something reasonable when this config is evaluated by the mux
 local function get_appearance()
@@ -11,22 +14,19 @@ local function get_appearance()
 	return "Dark"
 end
 
-local function theme_for_appearance(appearance)
-	if appearance:find("Dark") then
-		return require("lua/rose-pine-moon")
-	else
-		return require("lua/rose-pine-dawn")
-	end
-end
-
-local theme = theme_for_appearance(get_appearance())
-config.colors = theme.colors()
+local theme = require("lua/nightfox")
+config.color_schemes = {
+	["My Default"] = theme.color_scheme(),
+}
+config.color_scheme = "My Default"
 config.window_frame = theme.window_frame()
+config.colors = theme.colors()
 
-function update_background(window)
+local function update_background(window)
 	local window_dims = window:get_dimensions()
 	local overrides = window:get_config_overrides() or {}
 
+	local colors = theme.colors()
 	if window_dims.is_full_screen then
 		if not overrides.macos_window_background_blur and overrides.window_background_opacity then
 			-- not changing anything
@@ -34,10 +34,19 @@ function update_background(window)
 		end
 		overrides.macos_window_background_blur = nil
 		overrides.window_background_opacity = nil
+
+		colors.tab_bar.background = "black"
+		colors.tab_bar.active_tab.bg_color = "black"
+		colors.tab_bar.inactive_tab.bg_color = "black"
 	else
 		overrides.window_background_opacity = 0.90
 		overrides.macos_window_background_blur = 20
+		colors.tab_bar.background = colors.background
+		colors.tab_bar.active_tab.bg_color = colors.background
+		colors.tab_bar.inactive_tab.bg_color = colors.background
 	end
+	overrides.colors = colors
+
 	window:set_config_overrides(overrides)
 end
 
@@ -49,23 +58,17 @@ wezterm.on("window-config-reloaded", function(window)
 	update_background(window)
 end)
 
-config.window_decorations = "TITLE|RESIZE"
+config.window_decorations = "RESIZE"
 config.integrated_title_button_style = "MacOsNative"
 
 config.font = wezterm.font("Liga SFMono Nerd Font")
 config.font_size = 16
+
+-- tab bar
 config.use_fancy_tab_bar = false
 config.hide_tab_bar_if_only_one_tab = false
 config.tab_bar_at_bottom = true
-
-config.colors.tab_bar.background = theme.colors().background
-config.colors.tab_bar.active_tab.bg_color = theme.colors().background
-config.colors.tab_bar.active_tab.fg_color = theme.colors().ansi[4]
-
-config.colors.tab_bar.inactive_tab.bg_color = theme.colors().background
-config.colors.tab_bar.inactive_tab.fg_color = theme.colors().ansi[6]
-config.colors.tab_bar.new_tab.fg_color = theme.colors().ansi[5]
-
+config.show_new_tab_button_in_tab_bar = false
 local current_window_icon = ""
 local current_session_icon = ""
 local username_icon = ""
@@ -80,21 +83,21 @@ local spacer = " "
 wezterm.on("update-status", function(window, pane)
 	local cells = {}
 
-	table.insert(cells, { Background = { Color = theme.colors().background } })
-	table.insert(cells, { Foreground = { Color = theme.colors().foreground } })
+	-- table.insert(cells, { Background = { Color = config.colors.background } })
+	table.insert(cells, { Foreground = { Color = config.colors.foreground } })
 	table.insert(cells, { Text = spacer })
 	table.insert(cells, { Text = current_session_icon })
 	table.insert(cells, { Text = spacer })
 	table.insert(cells, { Text = window:active_workspace() })
-	table.insert(cells, { Foreground = { Color = theme.colors().brights[1] } })
+	table.insert(cells, { Foreground = { Color = config.colors.brights[1] } })
 	table.insert(cells, { Text = field_separator })
 	table.insert(cells, { Text = current_window_icon })
 	table.insert(cells, { Text = spacer })
-	table.insert(cells, { Foreground = { Color = theme.colors().ansi[2] } })
+	table.insert(cells, { Foreground = { Color = config.colors.ansi[2] } })
 	table.insert(cells, { Text = window:active_pane():get_title() })
-	table.insert(cells, { Foreground = { Color = theme.colors().brights[1] } })
+	table.insert(cells, { Foreground = { Color = config.colors.brights[1] } })
 	table.insert(cells, { Text = field_separator })
-	table.insert(cells, { Foreground = { Color = theme.colors().ansi[7] } })
+	table.insert(cells, { Foreground = { Color = config.colors.ansi[7] } })
 	window:set_left_status(wezterm.format(cells))
 end)
 
@@ -121,21 +124,21 @@ wezterm.on("update-status", function(window, pane)
 			hostname = wezterm.hostname()
 		end
 
-		table.insert(cells, { Foreground = { Color = theme.colors().ansi[3] } })
+		table.insert(cells, { Foreground = { Color = config.colors.ansi[3] } })
 		local date = wezterm.strftime("%Y-%m-%d")
 		local time = wezterm.strftime("%H:%M")
 		table.insert(cells, { Text = time })
-		table.insert(cells, { Foreground = { Color = theme.colors().brights[1] } })
+		table.insert(cells, { Foreground = { Color = config.colors.brights[1] } })
 		table.insert(cells, { Text = field_separator })
-		table.insert(cells, { Foreground = { Color = theme.colors().ansi[3] } })
+		table.insert(cells, { Foreground = { Color = config.colors.ansi[3] } })
 		table.insert(cells, { Text = date })
-		table.insert(cells, { Foreground = { Color = theme.colors().brights[1] } })
+		table.insert(cells, { Foreground = { Color = config.colors.brights[1] } })
 		table.insert(cells, { Text = right_separator .. date_time_icon })
 		table.insert(cells, { Text = spacer })
 		table.insert(cells, { Text = spacer })
-		table.insert(cells, { Foreground = { Color = theme.colors().foreground } })
+		table.insert(cells, { Foreground = { Color = config.colors.foreground } })
 		table.insert(cells, { Text = hostname })
-		table.insert(cells, { Foreground = { Color = theme.colors().brights[1] } })
+		table.insert(cells, { Foreground = { Color = config.colors.brights[1] } })
 		table.insert(cells, { Text = right_separator .. hostname_icon })
 		table.insert(cells, { Text = spacer })
 	end
