@@ -61,7 +61,8 @@ end)
 config.window_decorations = "RESIZE"
 config.integrated_title_button_style = "MacOsNative"
 
-config.font = wezterm.font("Liga SFMono Nerd Font")
+-- config.font = wezterm.font("Liga SFMono Nerd Font")
+config.font = wezterm.font("FiraCode Nerd Font")
 config.font_size = 16
 
 -- tab bar
